@@ -19,26 +19,33 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
-
-      <input placeholder="Name" onChange={(e) => setName(e.target.value)} />
-
-      <br />
-
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-
-      <br />
+    <form className="auth-form" onSubmit={handleSubmit}>
+      <h2 className="auth-form-title">Register</h2>
 
       <input
+        className="auth-form-input"
+        type="text"
+        placeholder="Name"
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <input
+        className="auth-form-input"
+        type="email"
+        placeholder="Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        className="auth-form-input"
         type="password"
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <br />
-
-      <button type="submit">Register</button>
+      <button className="auth-form-button" type="submit">
+        Register
+      </button>
     </form>
   );
 };

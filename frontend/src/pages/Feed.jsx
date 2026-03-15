@@ -21,7 +21,7 @@ const Feed = () => {
 
       <h2>Issues Feed</h2>
 
-      {issues.map((issue) => (
+      {Array.isArray(issues) && issues.map((issue) => (
         <IssueCard key={issue._id} issue={issue} />
       ))}
     </div>

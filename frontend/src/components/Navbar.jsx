@@ -1,12 +1,28 @@
 import { Link } from "react-router-dom";
+import "../App.css";
 
 const Navbar = () => {
   return (
-    <nav style={{ padding: "10px", background: "#eee" }}>
-      <Link to="/">Feed</Link> |{" "}
-      <Link to="/login">Login</Link> |{" "}
-      <Link to="/register">Register</Link> |{" "}
-      <Link to="/admin">Admin</Link>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          Hostel Issues
+        </Link>
+        <div className="navbar-links">
+          <Link to="/" className="navbar-link">
+            Feed
+          </Link>
+          <Link to="/login" className="navbar-link">
+            Login
+          </Link>
+          <Link to="/register" className="navbar-link">
+            Register
+          </Link>
+          <Link to="/admin" className="navbar-link">
+            Admin
+          </Link>
+        </div>
+      </div>
     </nav>
   );
 };

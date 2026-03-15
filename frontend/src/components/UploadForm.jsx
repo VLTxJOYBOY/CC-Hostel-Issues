@@ -22,24 +22,24 @@ const UploadForm = () => {
   };
 
   return (
-    <form onSubmit={submitIssue}>
-      <h3>Report Issue</h3>
+    <form className="upload-form" onSubmit={submitIssue}>
+      <h3 className="upload-form-title">Report an Issue</h3>
 
       <textarea
-        placeholder="Describe issue"
+        className="upload-form-textarea"
+        placeholder="Describe the issue..."
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <br />
-
       <input
+        className="upload-form-file-input"
         type="file"
         onChange={(e) => setImage(e.target.files[0])}
       />
 
-      <br />
-
-      <button type="submit">Submit Issue</button>
+      <button className="upload-form-button" type="submit">
+        Submit Issue
+      </button>
     </form>
   );
 };
