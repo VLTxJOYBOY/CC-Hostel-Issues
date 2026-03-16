@@ -17,39 +17,41 @@ const Landing = () => {
           display:flex;
           justify-content:center;
           align-items:center;
-          background: linear-gradient(135deg,#667eea,#764ba2);
+          background: linear-gradient(135deg,#4f5bd5,#6a3fb5);
         }
 
         .landing-card{
-          backdrop-filter: blur(14px);
-          background: rgba(255,255,255,0.1);
-          border:1px solid rgba(255,255,255,0.2);
-          border-radius:18px;
+          backdrop-filter: blur(16px);
+          background: rgba(0,0,0,0.35);
+          border:1px solid rgba(255,255,255,0.25);
+          border-radius:20px;
           padding:50px 40px;
           width:380px;
           text-align:center;
-          box-shadow:0 20px 40px rgba(0,0,0,0.2);
+          box-shadow:0 20px 50px rgba(0,0,0,0.4);
           color:white;
           transition:0.3s;
         }
 
         .landing-card:hover{
           transform:translateY(-6px);
-          box-shadow:0 25px 50px rgba(0,0,0,0.35);
+          box-shadow:0 30px 60px rgba(0,0,0,0.5);
         }
 
         .landing-title{
-          font-size:36px;
+          font-size:38px;
           font-weight:700;
-          margin-bottom:10px;
+          margin-bottom:12px;
           letter-spacing:1px;
+          text-shadow:0 2px 8px rgba(0,0,0,0.6);
         }
 
         .landing-subtitle{
           font-size:15px;
-          opacity:0.9;
+          opacity:0.95;
           line-height:1.6;
           margin-bottom:30px;
+          color:#f1f1f1;
         }
 
         .landing-actions{
@@ -70,7 +72,7 @@ const Landing = () => {
 
         .landing-button-primary{
           background:white;
-          color:#764ba2;
+          color:#6a3fb5;
         }
 
         .landing-button-primary:hover{
@@ -85,13 +87,14 @@ const Landing = () => {
 
         .landing-button-secondary:hover{
           background:white;
-          color:#764ba2;
+          color:#6a3fb5;
           transform:scale(1.05);
         }
 
         .landing-footer{
           font-size:13px;
-          opacity:0.8;
+          opacity:0.9;
+          color:#e6e6e6;
         }
 
         @media(max-width:500px){
@@ -120,7 +123,10 @@ const Landing = () => {
               Login
             </Link>
 
-            <Link className="landing-button landing-button-secondary" to="/register">
+            <Link
+              className="landing-button landing-button-secondary"
+              to="/register"
+            >
               Register
             </Link>
           </div>
