@@ -7,7 +7,7 @@ const Feed = () => {
   const [issues, setIssues] = useState([]);
 
   const fetchIssues = async () => {
-    const res = await API.get("/issues");
+    const res = await API.get("/api/issues");
     setIssues(res.data);
   };
 

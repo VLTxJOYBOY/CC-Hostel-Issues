@@ -8,17 +8,28 @@ const UploadForm = () => {
   const submitIssue = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("description", description);
-    formData.append("image", image);
+    try {
+      const formData = new FormData();
+      formData.append("description", description);
+      if (image) {
+        formData.append("image", image);
+      }
 
-    await API.post("/issues", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+      await API.post("/api/issues", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    alert("Issue submitted");
+      alert("Issue submitted");
+      setDescription("");
+      setImage(null);
+    } catch (err) {
+      const message =
+        err?.response?.data?.message || err?.message || "Failed to submit issue";
+      console.error("Create issue failed:", err?.response?.data || err);
+      alert(message);
+    }
   };
 
   return (
@@ -28,13 +39,15 @@ const UploadForm = () => {
       <textarea
         className="upload-form-textarea"
         placeholder="Describe the issue..."
+        value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
       <input
         className="upload-form-file-input"
         type="file"
-        onChange={(e) => setImage(e.target.files[0])}
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files?.[0] || null)}
       />
 
       <button className="upload-form-button" type="submit">

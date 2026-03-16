@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
+  const { token, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -9,18 +19,32 @@ const Navbar = () => {
           Hostel Issues
         </Link>
         <div className="navbar-links">
-          <Link to="/" className="navbar-link">
-            Feed
-          </Link>
-          <Link to="/login" className="navbar-link">
-            Login
-          </Link>
-          <Link to="/register" className="navbar-link">
-            Register
-          </Link>
-          <Link to="/admin" className="navbar-link">
+          {token ? (
+            <>
+              <Link to="/feed" className="navbar-link">
+                Feed
+              </Link>
+              <button
+                type="button"
+                className="navbar-link navbar-link-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="navbar-link">
+                Login
+              </Link>
+              <Link to="/register" className="navbar-link">
+                Register
+              </Link>
+            </>
+          )}
+          {/* <Link to="/admin" className="navbar-link">
             Admin
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>
