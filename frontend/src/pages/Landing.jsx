@@ -68,6 +68,7 @@ const Landing = () => {
           font-size:15px;
           font-weight:600;
           transition:all 0.3s ease;
+          display:inline-block;
         }
 
         .landing-button-primary{
@@ -83,6 +84,7 @@ const Landing = () => {
         .landing-button-secondary{
           border:2px solid white;
           color:white;
+          background:rgba(255,255,255,0.15);
         }
 
         .landing-button-secondary:hover{
