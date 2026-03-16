@@ -1,15 +1,58 @@
 import Issue from "../models/Issue.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import crypto from "crypto";
+import getS3Client from "../config/s3.js";
 
 export const createIssue = async (req, res) => {
-  const { description } = req.body;
+  try {
+    const description = req.body?.description;
 
-  const issue = await Issue.create({
-    description,
-    imageUrl: "image-placeholder",
-    postedBy: req.user._id,
-  });
+    if (!description) {
+      return res.status(400).json({ message: "Description is required" });
+    }
 
-  res.json(issue);
+    let imageUrl = null;
+
+    if (req.file) {
+      const bucket = process.env.AWS_BUCKET_NAME;
+      if (!bucket) {
+        return res
+          .status(500)
+          .json({ message: "Missing AWS_BUCKET_NAME in environment" });
+      }
+
+      let s3;
+      try {
+        s3 = getS3Client();
+      } catch (e) {
+        return res.status(500).json({ message: e.message });
+      }
+
+      const ext = (req.file.originalname || "").split(".").pop();
+      const key = `issues/${crypto.randomUUID()}${ext ? `.${ext}` : ""}`;
+
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: key,
+          Body: req.file.buffer,
+          ContentType: req.file.mimetype,
+        })
+      );
+
+      imageUrl = `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+    }
+
+    const issue = await Issue.create({
+      description,
+      imageUrl,
+      postedBy: req.user._id,
+    });
+
+    res.json(issue);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to create issue", error: err.message });
+  }
 };
 
 export const getIssues = async (req, res) => {
