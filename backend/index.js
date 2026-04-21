@@ -12,6 +12,9 @@ dotenv.config();
 
 const app = express();
 
+// Required when app is behind ALB/Nginx so req.ip/protocol are resolved correctly.
+app.set("trust proxy", 1);
+
 app.use(cors());
 app.use(express.json());
 
@@ -41,6 +44,10 @@ app.use((err, req, res, next) => {
 
 app.get("/", (req, res) => {
   res.send("Hostel Issue Reporting API Running");
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 const PORT = process.env.PORT || 5000;

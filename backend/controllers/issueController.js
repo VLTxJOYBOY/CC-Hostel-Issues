@@ -2,6 +2,7 @@ import Issue from "../models/Issue.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import crypto from "crypto";
 import getS3Client from "../config/s3.js";
+import writeS3UploadLog from "../utils/uploadLog.js";
 
 export const createIssue = async (req, res) => {
   try {
@@ -12,6 +13,7 @@ export const createIssue = async (req, res) => {
     }
 
     let imageUrl = null;
+    let uploadedObject = null;
 
     if (req.file) {
       const bucket = process.env.AWS_BUCKET_NAME;
@@ -41,6 +43,13 @@ export const createIssue = async (req, res) => {
       );
 
       imageUrl = `https://${bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+      uploadedObject = {
+        bucket,
+        key,
+        fileName: req.file.originalname || null,
+        contentType: req.file.mimetype || null,
+        fileSize: req.file.size || 0,
+      };
     }
 
     const issue = await Issue.create({
@@ -48,6 +57,23 @@ export const createIssue = async (req, res) => {
       imageUrl,
       postedBy: req.user._id,
     });
+
+    if (uploadedObject) {
+      try {
+        await writeS3UploadLog({
+          issueId: issue._id.toString(),
+          bucket: uploadedObject.bucket,
+          objectKey: uploadedObject.key,
+          imageUrl,
+          fileName: uploadedObject.fileName,
+          contentType: uploadedObject.contentType,
+          fileSize: uploadedObject.fileSize,
+          uploadedByUserId: req.user._id.toString(),
+        });
+      } catch (logError) {
+        console.warn("DynamoDB upload log write failed:", logError.message);
+      }
+    }
 
     res.json(issue);
   } catch (err) {
